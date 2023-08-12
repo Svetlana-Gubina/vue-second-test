@@ -3,49 +3,70 @@
     <UserInput @create="addUser"/>
     <UsersTable v-if="users.length > 0" @openModal="openModal" @delete="deleteUser" :users="users"/>
       <p v-else>Список пользователей пуст</p>
-    <DialogElement v-model:show="isModalShown">
-      <h2 id="editUser" class="modal_title">Редактировть пользователя</h2>
-        <form class="edit-user_form" action="#" aria-labelledby="editUser">
-          
-          <div class="modal-inputs">
-          <InputElement placeholder="Имя"  class="edit-user_input" />
-          <InputElement placeholder="Фамилия"  class="edit-user_input" />
-          </div>
-          
-          <ButtonElement class="edit-user_btn" >Сохранить</ButtonElement>
-          <ButtonElement class="edit-user_btn" >Отменить</ButtonElement>
-        </form>
-    </DialogElement>  
+    <DialogElement :activeUser="activeUser" v-model:show="isModalShown" />
   </div>
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import UsersTable from './components/UsersTable.vue';
 import UserInput from './components/UserInput.vue';
+import { collection, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { db } from '../src/firebase';
+
+const usersList = ref([])
+const usersCollectionRef = collection(db, "users");
 
 export default {
+  setup() {
+        onMounted(()=> {
+          onSnapshot(usersCollectionRef, (querySnapshot) => {
+            const fbUsers = [];
+            querySnapshot.forEach((doc) => {
+              const user ={
+                id: doc.id,
+                firstName: doc.data().firstName,
+                lastName: doc.data().lastName
+              }
+              fbUsers.push(user)
+            });
+            usersList.value = fbUsers;
+          });
+
+        })
+  },
   components: {
     UsersTable,
     UserInput
   },
   data() {
     return {
-      users: [
-      {id: '1', firstName: 'Иван', lastName: 'Иванов'},
-      { id: '2', firstName: 'Андрей', lastName: 'Петров'}
-      ],
-      isModalShown: false
+      users: usersList,
+      //  users: [
+      //  {id: '1', firstName: 'Иван', lastName: 'Иванов'},
+      //  { id: '2', firstName: 'Андрей', lastName: 'Петров'}
+      // ],
+      isModalShown: false,
+      activeUser: null
     }
   },
   methods: {
     addUser(user) {
-      this.users.push(user)
+      addDoc(usersCollectionRef, {
+        firstName: user.firstName,
+        lastName: user.lastName
+      });
     },
     deleteUser(userId){
-      this.users = this.users.filter((user) => user.id !== userId)
+      deleteDoc(doc(usersCollectionRef, userId));
     },
-    openModal() {
+    openModal(userId) {
+      console.log(userId);
+      this.activeUser = this.users.find((user) => user.id === userId)
       this.isModalShown = true;
+    },
+    closeModal() {
+      this.isModalShown = false;
     }
   }
 }

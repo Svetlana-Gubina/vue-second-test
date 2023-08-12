@@ -13,7 +13,7 @@
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>
-            <ButtonElement class="table_btn" @click="openModal">Редактировть</ButtonElement>
+            <ButtonElement class="table_btn" @click="openModal(user.id)">Редактировть</ButtonElement>
             <ButtonElement class="table_btn" @click="deleteUser(user.id)">Удалить</ButtonElement>
           </td>
           </tr>
@@ -35,8 +35,8 @@ export default {
     deleteUser(userId) {
       this.$emit('delete', userId);
     },
-    openModal() {
-      this.$emit('openModal')
+    openModal(userId) {
+      this.$emit('openModal',userId)
     }
   }
 }
@@ -46,6 +46,8 @@ export default {
 <style scoped>
 table {
   color: #000000;
+  width: 800px;
+  max-width: 100%;
 }
 table,
 td, th {
@@ -55,6 +57,7 @@ td, th {
 
 td, th {
   vertical-align: middle;
+  text-align: center;
   padding: 10px 20px;
 }
 

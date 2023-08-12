@@ -2,7 +2,17 @@
    <div class="modal" v-if="show" @click.stop="closeModal">
     <div class="modal_content" @click.stop>
         <ButtonElement @click="closeModal" class="modal-btn" aria-label="Закрыть модальное окно">x</ButtonElement>
-        <slot></slot>
+        <h2 id="editUser" class="modal_title">Редактировть пользователя</h2>
+        <form class="edit-user_form" action="#" aria-labelledby="editUser">
+          
+          <div class="modal-inputs">
+          <InputElement class="edit-user_input" :value="activeUser.firstName" />
+          <InputElement class="edit-user_input" :value="activeUser.lastName" />
+          </div>
+          
+          <ButtonElement class="edit-user_btn" >Сохранить</ButtonElement>
+          <ButtonElement @click="closeModal" class="edit-user_btn" >Отменить</ButtonElement>
+        </form>
     </div>
    </div>
 </template>
@@ -14,7 +24,11 @@ export default {
         show: {
             type:  Boolean,
             default: false
-        }
+        },
+        activeUser: {
+            type: Object,
+            required: true
+        },
     },
     methods: {
         closeModal() {

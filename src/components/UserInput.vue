@@ -42,6 +42,8 @@ export default {
     padding: 10px;
     width: auto;
     margin-bottom: 35px;
+    width: 600px;
+    max-width: 100%;
 }
 h2 {
   color: #000000;
@@ -55,8 +57,6 @@ h2 {
 }
 
 .new-user_form {
-    outline: 2px dashed #000000;
-
     width: 100%;
     max-width: 100%;
     display: flex;
