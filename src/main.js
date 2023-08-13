@@ -5,7 +5,6 @@ import ui from './ui';
 // import store from './store'
 
 const app = createApp(App);
-// console.log(ui.forEach((element) => element));
 ui.forEach((element) => {
   app.component(element.name, element);
 });

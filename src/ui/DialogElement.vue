@@ -6,11 +6,11 @@
         <form class="edit-user_form" action="#" aria-labelledby="editUser">
           
           <div class="modal-inputs">
-          <InputElement class="edit-user_input" :value="activeUser.firstName" />
-          <InputElement class="edit-user_input" :value="activeUser.lastName" />
+          <InputElement class="edit-user_input" v-model="user.firstName" />
+          <InputElement class="edit-user_input" v-model="user.lastName" />
           </div>
           
-          <ButtonElement class="edit-user_btn" >Сохранить</ButtonElement>
+          <ButtonElement @click="updateUser(activeUser.id)" class="edit-user_btn" >Сохранить</ButtonElement>
           <ButtonElement @click="closeModal" class="edit-user_btn" >Отменить</ButtonElement>
         </form>
     </div>
@@ -30,12 +30,30 @@ export default {
             required: true
         },
     },
+    data() {
+    return {
+        user:{
+            firstName: '',
+            lastName: ''
+        }
+      }
+    },
     methods: {
         closeModal() {
             this.$emit('update:show', false)
+            this.user.firstName = '';
+            this.user.lastName = '';
         },
         openModal() {
             this.$emit('update:show', true)
+        },
+        updateUser(userId) {
+            const newInfo = {
+                firstName: this.user.firstName,
+                lastName: this.user.lastName
+            }
+            this.$emit('updateUser', userId, newInfo)
+            this.closeModal()
         }
     }
 }

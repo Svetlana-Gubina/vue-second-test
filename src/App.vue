@@ -3,7 +3,7 @@
     <UserInput @create="addUser"/>
     <UsersTable v-if="users.length > 0" @openModal="openModal" @delete="deleteUser" :users="users"/>
       <p v-else>Список пользователей пуст</p>
-    <DialogElement :activeUser="activeUser" v-model:show="isModalShown" />
+    <DialogElement @updateUser="updateUser" :activeUser="activeUser" v-model:show="isModalShown" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 import { ref, onMounted } from 'vue'
 import UsersTable from './components/UsersTable.vue';
 import UserInput from './components/UserInput.vue';
-import { collection, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, doc,updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../src/firebase';
 
 const usersList = ref([])
@@ -42,10 +42,6 @@ export default {
   data() {
     return {
       users: usersList,
-      //  users: [
-      //  {id: '1', firstName: 'Иван', lastName: 'Иванов'},
-      //  { id: '2', firstName: 'Андрей', lastName: 'Петров'}
-      // ],
       isModalShown: false,
       activeUser: null
     }
@@ -60,8 +56,15 @@ export default {
     deleteUser(userId){
       deleteDoc(doc(usersCollectionRef, userId));
     },
+    updateUser(userId, newInfo) {
+      const activeUser = this.users.find((user) => user.id === userId)
+      const updatedUser = {
+        firstName: newInfo.firstName || activeUser.firstName,
+        lastName: newInfo.lastName || activeUser.lastName
+      }
+      updateDoc(doc(usersCollectionRef, userId), updatedUser);
+    },
     openModal(userId) {
-      console.log(userId);
       this.activeUser = this.users.find((user) => user.id === userId)
       this.isModalShown = true;
     },
@@ -79,10 +82,11 @@ export default {
     padding: 0;
 }
 .wrapper {
-  outline: 2px dashed steelblue;
   display: flex;
   flex-direction: column;
   padding: 20px;
+  width: 100%;
+  max-width: 100%;;
 }
 .modal_title {
   color: #000000;
