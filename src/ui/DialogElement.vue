@@ -26,7 +26,7 @@ export default {
             default: false
         },
         activeUser: {
-            type: Object,
+            type: [Object, null],
             required: true
         },
     },

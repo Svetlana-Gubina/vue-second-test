@@ -1,13 +1,19 @@
 <template>
     <button 
-          type="button" 
+          :type="type"
           >
           <slot></slot></button>
 </template>
 
 <script>
 export default {
-    name: 'ButtonElement'
+    name: 'ButtonElement',
+    props: {
+        type: {
+            type:  String,
+            default: 'button'
+        },
+    },
 }
 </script>
 

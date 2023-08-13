@@ -3,6 +3,7 @@
           type="text" 
           :value="modelValue"
           @input="updateInput"
+          required
           >
 </template>
 
@@ -10,7 +11,7 @@
 export default {
     name: 'InputElement',
     props: {
-        modelValue: [String, Number]
+        modelValue: [String, Number],
     },
     methods: {
         updateInput(event) {

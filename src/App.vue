@@ -48,10 +48,13 @@ export default {
   },
   methods: {
     addUser(user) {
-      addDoc(usersCollectionRef, {
+      if(user.firstName && user.lastName) {
+        addDoc(usersCollectionRef, {
         firstName: user.firstName,
         lastName: user.lastName
       });
+      }
+      
     },
     deleteUser(userId){
       deleteDoc(doc(usersCollectionRef, userId));

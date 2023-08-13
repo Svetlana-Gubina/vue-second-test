@@ -1,11 +1,11 @@
 <template>
     <div class="new-user_wrapper">
         <h2 id="newUser">Новый пользователь</h2>
-        <form class="new-user_form" action="#" aria-labelledby="newUser">
+        <form class="new-user_form" action="#" aria-labelledby="newUser" @submit.prevent="sendMessage">
           
-          <InputElement placeholder="Имя"  class="new-user_input" v-model="user.firstName"/>
+          <InputElement placeholder="Имя" class="new-user_input" v-model="user.firstName"/>
           <InputElement placeholder="Фамилия"  class="new-user_input" v-model="user.lastName"/>
-          <ButtonElement class="new-user_btn" @click="addUser">Добавить</ButtonElement>
+          <ButtonElement type="submit" class="new-user_btn" @click="addUser">Добавить</ButtonElement>
         </form>
     </div>
 </template>
@@ -29,6 +29,9 @@ export default {
             firstName: '',
             lastName: ''
         }
+    },
+    sendMessage() {
+      console.log("Error!")
     }
   }
 }
