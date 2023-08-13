@@ -89,7 +89,8 @@ export default {
   flex-direction: column;
   padding: 20px;
   width: 100%;
-  max-width: 100%;;
+  max-width: 100%;
+  min-width: 350px;
 }
 .modal_title {
   color: #000000;

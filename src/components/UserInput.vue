@@ -75,4 +75,15 @@ h2 {
     margin-right: 10px;
     border: 2px solid #01010152;
 }
+
+
+@media (max-width: 600px) {
+ .new-user_form {
+  flex-direction: column;
+ }
+ .new-user_input {
+  margin-right: 0;
+  margin-bottom: 20px;
+ }
+}
 </style>

@@ -47,6 +47,7 @@ table {
   color: #000000;
   width: 800px;
   max-width: 100%;
+  min-width: 350px;
 }
 table,
 td, th {
